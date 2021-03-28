@@ -93,3 +93,20 @@ class snake {
     }
 
 }
+class game {
+    constructor(canv) {
+        this.canvas = document.getElementById(canv);
+        this.python = new snake();
+        this.python.setup();
+        this.start()
+    }
+    start() {
+        var id = null;
+        clearInterval(id);
+        id = setInterval(this.move(), 10);
+    }
+    move() {
+        this.python.run();
+
+    }
+}

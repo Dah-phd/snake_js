@@ -1,5 +1,5 @@
 class snake {
-    constructor(dims = [20, 40], init_length = 3) {
+    constructor(dims = [20, 30], init_length = 3) {
         this.dims = dims;
         this.init_length = init_length;
         this.set_food = false
@@ -32,7 +32,7 @@ class snake {
                 this._move()
             }
         }
-        this.turned = false
+        this.turned = false;
     }
     up() { if (this.face != 'down') { this.face = 'up'; this.turned = true } }
     left() { if (this.face != 'right') { this.face = 'left'; this.turned = true } }
@@ -42,7 +42,7 @@ class snake {
     _make_food() {
         let position, row, sq;
         let py_long = this.python.length;
-        position = this._randint(min = 1, max = (this.dims[0] * this.dims[1] - py_long));
+        position = this._randint(1, (this.dims[0] * this.dims[1] - py_long));
         for (row = 0; row < this.dims[0]; row++) {
             for (sq = 0; sq < this.dims[1]; sq++) {
                 if (!this._food_in_py(row, sq, py_long)) {
@@ -80,7 +80,7 @@ class snake {
     }
 
     _move(remove = true) {
-        let head = this.python[0];
+        let head = this.python[0].slice();
         if (this.face == 'up') { head[0]-- }
         else if (this.face == 'down') { head[0]++ }
         else if (this.face == 'left') { head[1]-- }
@@ -95,18 +95,38 @@ class snake {
 }
 class game {
     constructor(canv) {
-        this.canvas = document.getElementById(canv);
+        this.grid = document.getElementById(canv);
+        this.cvs = this.grid.getContext('2d');
         this.python = new snake();
         this.python.setup();
         this.start()
+        console.log('run!')
     }
     start() {
-        var id = null;
-        clearInterval(id);
-        id = setInterval(this.move(), 10);
-    }
-    move() {
-        this.python.run();
+        let game = this;
+        var fps = setInterval(function () { game.move(game) }, 100);
 
+    }
+    move(obj) {
+        obj.python.run();
+        obj.draw();
+        document.addEventListener('keydown', function (e) { obj.turn(e, obj) });
+
+    }
+    turn(e, obj) {
+        if (e.key == 'ArrowDown') { this.python.down() }
+        else if (e.key == 'ArrowUp') { this.python.up() }
+        else if (e.key == 'ArrowLeft') { this.python.left() }
+        else if (e.key == 'ArrowRight') { this.python.right() }
+    }
+    draw() {
+        this.cvs.clearRect(0, 0, this.grid.width, this.grid.height);
+        let i;
+        for (i = 0; i < this.python.python.length; i++) {
+            this.cvs.fillStyle = 'green';
+            this.cvs.fillRect(40 * this.python.python[i][1], 40 * this.python.python[i][0], 40, 40);
+        }
+        this.cvs.fillStyle = 'red';
+        this.cvs.fillRect(40 * this.python.food[1], 40 * this.python.food[0], 40, 40);
     }
 }

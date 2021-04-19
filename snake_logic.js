@@ -46,7 +46,7 @@ class snake {
         for (row = 0; row < this.dims[0]; row++) {
             for (sq = 0; sq < this.dims[1]; sq++) {
                 if (!this._food_in_py(row, sq, py_long)) {
-                    if (position == 0) { this.food = [row, sq]; this.humgry = false } else { position-- }
+                    if (position == 0) { this.food = [row, sq]; this.humgry = false; return } else { position-- }
                 }
             }
         }
@@ -104,10 +104,11 @@ class game {
     }
     start() {
         let game = this;
-        var fps = setInterval(function () { game.move(game) }, 100);
+        this.fps = setInterval(function () { game.move(game) }, 100);
 
     }
     move(obj) {
+        if (!obj.python.alive) { obj.fps.clearInterval() }
         obj.python.run();
         obj.draw();
         document.addEventListener('keydown', function (e) { obj.turn(e, obj) });

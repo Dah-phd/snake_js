@@ -111,10 +111,10 @@ class game {
         if (!obj.python.alive) { obj.fps.clearInterval() }
         obj.python.run();
         obj.draw();
-        document.addEventListener('keydown', function (e) { obj.turn(e, obj) });
+        document.addEventListener('keydown', function (e) { obj.turn(e) });
 
     }
-    turn(e, obj) {
+    turn(e) {
         if (e.key == 'ArrowDown') { this.python.down() }
         else if (e.key == 'ArrowUp') { this.python.up() }
         else if (e.key == 'ArrowLeft') { this.python.left() }

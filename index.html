@@ -8,10 +8,14 @@
 <body>
     <script src="snake_logic.js"></script>
     <script>
-        function new_game() { var ng = new game('field') }
+        function new_game() { var ng = new game('field', 'board') }
     </script>
-    <canvas oncontextmenu="return false" id='field' height="800" width="1200"></canvas>
-    <button onclick="new_game()">Start</button>
+    <div class="row">
+        <label>Score:</label>
+        <div id='board'></div>
+        <button onclick="new_game()">Start</button>
+    </div>
+    <canvas oncontextmenu="return false" id='field' style="border:10px solid #000000"></canvas>
 </body>
 
 </html>

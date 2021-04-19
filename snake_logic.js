@@ -2,8 +2,7 @@ class snake {
     constructor(dims = [20, 30], init_length = 3) {
         this.dims = dims;
         this.init_length = init_length;
-        this.set_food = false
-
+        this.set_food = false;
     }
 
     setup() {
@@ -26,7 +25,8 @@ class snake {
         if (this.alive) {
             if (this.humgry) {
                 this._move(false);
-                this._make_food()
+                this._make_food();
+                console.log(this.score)
             }
             else {
                 this._move()
@@ -94,8 +94,11 @@ class snake {
 
 }
 class game {
-    constructor(canv) {
+    constructor(canv, score_board) {
         this.grid = document.getElementById(canv);
+        this.score_board = document.getElementById(score_board);
+        this.grid.height = 800;
+        this.grid.width = 1200;
         this.cvs = this.grid.getContext('2d');
         this.python = new snake();
         this.python.setup();
@@ -107,11 +110,11 @@ class game {
         this.fps = setInterval(function () { game.move(game) }, 100);
 
     }
-    move(obj) {
-        if (!obj.python.alive) { obj.fps.clearInterval() }
-        obj.python.run();
-        obj.draw();
-        document.addEventListener('keydown', function (e) { obj.turn(e) });
+    move(self) {
+        if (!self.python.alive) { clearInterval(self.fps); self.end(); return }
+        self.python.run();
+        self.draw();
+        document.addEventListener('keydown', function (e) { self.turn(e) });
 
     }
     turn(e) {
@@ -121,6 +124,7 @@ class game {
         else if (e.key == 'ArrowRight') { this.python.right() }
     }
     draw() {
+        this.score_board.innerHTML = this.python.score;
         this.cvs.clearRect(0, 0, this.grid.width, this.grid.height);
         let i;
         for (i = 0; i < this.python.python.length; i++) {
@@ -129,5 +133,8 @@ class game {
         }
         this.cvs.fillStyle = 'red';
         this.cvs.fillRect(40 * this.python.food[1], 40 * this.python.food[0], 40, 40);
+    }
+    end() {
+        alert('GAME OVER!\n' + this.python.score.toString())
     }
 }

@@ -128,8 +128,10 @@ class game {
         this.cvs.clearRect(0, 0, this.grid.width, this.grid.height);
         let i;
         for (i = 0; i < this.python.python.length; i++) {
+            this.cvs.fillStyle = 'black';
+            this.cvs.fillRect(40 * this.python.python[i][1] - 1, 40 * this.python.python[i][0] - 1, 40, 40);
             this.cvs.fillStyle = 'green';
-            this.cvs.fillRect(40 * this.python.python[i][1], 40 * this.python.python[i][0], 40, 40);
+            this.cvs.fillRect(40 * this.python.python[i][1], 40 * this.python.python[i][0], 38, 38);
         }
         this.cvs.fillStyle = 'red';
         this.cvs.fillRect(40 * this.python.food[1], 40 * this.python.food[0], 40, 40);
